@@ -9,20 +9,27 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import './App.css';
 
+const initialInputState = ''
+const initialImageUrlState = ''
+const initialBoxState = {}
+const initialRouteState = 'signin'
+const initialIsSignedInState = false
+const initialUserState = {
+  id: '',
+  name: '',
+  email: '',
+  entries: 0,
+  joined: ''
+}
+
 function App() {
 
-  const [input, setInput] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
-  const [box, setBox] = useState({})
-  const [route, setRoute] = useState('signin')
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const [user, setUser] = useState({
-    id: '',
-    name: '',
-    email: '',
-    entries: 0,
-    joined: ''
-  })
+  const [input, setInput] = useState(initialInputState)
+  const [imageUrl, setImageUrl] = useState(initialImageUrlState)
+  const [box, setBox] = useState(initialBoxState)
+  const [route, setRoute] = useState(initialRouteState)
+  const [isSignedIn, setIsSignedIn] = useState(initialIsSignedInState)
+  const [user, setUser] = useState(initialUserState)
 
   const loadUser = (data) => {
     setUser({
@@ -112,6 +119,7 @@ function App() {
             .then(count => {
               setUser({...user, entries: count })
             })
+            .catch(console.log)
           }
           displayFaceBox(calculateFaceLocation(response))
         }) 
@@ -120,7 +128,12 @@ function App() {
 
   const onRouteChange = (route) => {
     if (route === 'signout') {
-      setIsSignedIn(false)
+      setInput(initialInputState)
+      setImageUrl(initialImageUrlState)
+      setBox(initialBoxState)
+      setRoute(initialRouteState)
+      setIsSignedIn(initialIsSignedInState)
+      setUser(initialUserState)
     } else if (route === 'home') {
       setIsSignedIn(true)
     }
