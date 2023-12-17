@@ -58,53 +58,19 @@ function App() {
     setBox(box)
   }
 
-  const returnClarifaiRequestOptions = (imageUrl) => {
-    // Your PAT (Personal Access Token) can be found in the portal under Authentification
-    const PAT = '2556c2fbcd9041cd9a5a9a2250f426f1';
-    // Specify the correct user_id/app_id pairings
-    // Since you're making inferences outside your app's scope
-    const USER_ID = 'ahappswk';       
-    const APP_ID = 'test';
-    // Change these to whatever model and image URL you want to use
-    const MODEL_ID = 'face-detection';
-    const IMAGE_URL = imageUrl;
-   
-    const raw = JSON.stringify({
-        "user_app_id": {
-            "user_id": USER_ID,
-            "app_id": APP_ID
-        },
-        "inputs": [
-            {
-                "data": {
-                    "image": {
-                        "url": IMAGE_URL
-                    }
-                }
-            }
-        ]
-    });
-  
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT
-        },
-        body: raw
-    };
-
-    return requestOptions;
-  
-  }
-
   const onInputChange = (event) => {
     setInput(event.target.value)
   }
 
   const onButtonSubmit = () => {
     setImageUrl(input)
-    fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiRequestOptions(input))
+        fetch('http://localhost:3000/imageurl', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+              input: input
+          })
+        })    
         .then(response => response.json())
         .then(response => {
           if (response) {
