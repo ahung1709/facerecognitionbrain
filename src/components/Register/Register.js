@@ -19,7 +19,7 @@ const Register = ({ loadUser, onRouteChange }) => {
     }
 
     const onSubmitSignIn = () => {
-        fetch('http://localhost:3000/register', {
+        fetch('https://boiling-journey-12073-f29587ce4185.herokuapp.com/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
