@@ -66,7 +66,9 @@ function App() {
 
   const onButtonSubmit = () => {
     setImageUrl(input);
-    fetch('https://boiling-journey-12073-f29587ce4185.herokuapp.com/imageurl', {
+
+    const API_URL = process.env.REACT_APP_API_URL;
+    fetch(`${API_URL}/imageurl`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -76,16 +78,13 @@ function App() {
       .then((response) => response.json())
       .then((response) => {
         if (response) {
-          fetch(
-            'https://boiling-journey-12073-f29587ce4185.herokuapp.com/image',
-            {
-              method: 'put',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                id: user.id,
-              }),
-            }
-          )
+          fetch(`${API_URL}/image`, {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: user.id,
+            }),
+          })
             .then((response) => response.json())
             .then((count) => {
               setUser({ ...user, entries: count });

@@ -13,7 +13,9 @@ const Signin = ({ loadUser, onRouteChange }) => {
   };
 
   const onSubmitSignIn = () => {
-    fetch('https://boiling-journey-12073-f29587ce4185.herokuapp.com/signin', {
+    const API_URL = process.env.REACT_APP_API_URL;
+
+    fetch(`${API_URL}/signin`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
