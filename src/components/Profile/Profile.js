@@ -28,8 +28,9 @@ const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
     }
   };
 
+  const API_URL = process.env.REACT_APP_API_URL;
   const onProfileUpdate = (data) => {
-    fetch(`http://localhost:3000/profile/${user.id}`, {
+    fetch(`${API_URL}/profile/${user.id}`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ formInput: data }),
