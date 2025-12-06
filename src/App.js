@@ -7,6 +7,8 @@ import Register from './components/Register/Register';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
+import Modal from './components/Modal/Modal';
+import Profile from './components/Profile/Profile';
 import './App.css';
 
 const initialInputState = '';
@@ -14,11 +16,14 @@ const initialImageUrlState = '';
 const initialBoxesState = [];
 const initialRouteState = 'signin';
 const initialIsSignedInState = false;
+const initialIsProfileOpen = false;
 const initialUserState = {
   id: '',
   name: '',
   email: '',
   entries: 0,
+  age: 0,
+  pet: '',
   joined: '',
 };
 
@@ -28,6 +33,7 @@ function App() {
   const [boxes, setBoxes] = useState(initialBoxesState);
   const [route, setRoute] = useState(initialRouteState);
   const [isSignedIn, setIsSignedIn] = useState(initialIsSignedInState);
+  const [isProfileOpen, setIsProfileOpen] = useState(initialIsProfileOpen);
   const [user, setUser] = useState(initialUserState);
 
   const loadUser = (data) => {
@@ -36,6 +42,8 @@ function App() {
       name: data.name,
       email: data.email,
       entries: data.entries,
+      age: data.age,
+      pet: data.pet,
       joined: data.joined,
     });
   };
@@ -104,10 +112,15 @@ function App() {
       setRoute(initialRouteState);
       setIsSignedIn(initialIsSignedInState);
       setUser(initialUserState);
+      return;
     } else if (route === 'home') {
       setIsSignedIn(true);
     }
     setRoute(route);
+  };
+
+  const toggleModal = () => {
+    setIsProfileOpen((prevState) => !prevState);
   };
 
   return (
@@ -118,7 +131,21 @@ function App() {
         color='#ffffff'
         bg={true}
       />
-      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      <Navigation
+        isSignedIn={isSignedIn}
+        onRouteChange={onRouteChange}
+        toggleModal={toggleModal}
+      />
+      {isProfileOpen && (
+        <Modal>
+          <Profile
+            isProfileOpen={isProfileOpen}
+            toggleModal={toggleModal}
+            loadUser={loadUser}
+            user={user}
+          />
+        </Modal>
+      )}
       {route === 'home' ? (
         <div>
           <Logo />
