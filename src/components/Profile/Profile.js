@@ -32,12 +32,17 @@ const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
   const onProfileUpdate = (data) => {
     fetch(`${API_URL}/profile/${user.id}`, {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: window.sessionStorage.getItem('token'),
+      },
       body: JSON.stringify({ formInput: data }),
     })
       .then((resp) => {
-        toggleModal();
-        loadUser({ ...user, ...data });
+        if (resp.status === 200 || resp.status === 304) {
+          toggleModal();
+          loadUser({ ...user, ...data });
+        }
       })
       .catch(console.log);
   };

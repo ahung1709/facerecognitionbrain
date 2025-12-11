@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ParticlesBg from 'particles-bg';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
@@ -36,6 +36,41 @@ function App() {
   const [isProfileOpen, setIsProfileOpen] = useState(initialIsProfileOpen);
   const [user, setUser] = useState(initialUserState);
 
+  useEffect(() => {
+    const token = window.sessionStorage.getItem('token');
+    const API_URL = process.env.REACT_APP_API_URL;
+
+    if (token) {
+      fetch(`${API_URL}/signin`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data && data.id) {
+            fetch(`${API_URL}/profile/${data.id}`, {
+              method: 'get',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token,
+              },
+            })
+              .then((resp) => resp.json())
+              .then((user) => {
+                if (user && user.email) {
+                  loadUser(user);
+                  onRouteChange('home');
+                }
+              });
+          }
+        })
+        .catch(console.log);
+    }
+  }, []);
+
   const loadUser = (data) => {
     setUser({
       id: data.id,
@@ -49,23 +84,28 @@ function App() {
   };
 
   const calculateFaceLocations = (data) => {
-    return data.outputs[0].data.regions.map((face) => {
-      const clarifaiFace = face.region_info.bounding_box;
+    if (data && data.outputs) {
+      return data.outputs[0].data.regions.map((face) => {
+        const clarifaiFace = face.region_info.bounding_box;
 
-      const image = document.getElementById('inputimage');
-      const width = Number(image.width);
-      const height = Number(image.height);
-      return {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - clarifaiFace.right_col * width,
-        bottomRow: height - clarifaiFace.bottom_row * height,
-      };
-    });
+        const image = document.getElementById('inputimage');
+        const width = Number(image.width);
+        const height = Number(image.height);
+        return {
+          leftCol: clarifaiFace.left_col * width,
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - clarifaiFace.right_col * width,
+          bottomRow: height - clarifaiFace.bottom_row * height,
+        };
+      });
+    }
+    return;
   };
 
   const displayFaceBoxes = (boxes) => {
-    setBoxes(boxes);
+    if (boxes) {
+      setBoxes(boxes);
+    }
   };
 
   const onInputChange = (event) => {
@@ -78,7 +118,10 @@ function App() {
     const API_URL = process.env.REACT_APP_API_URL;
     fetch(`${API_URL}/imageurl`, {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: window.sessionStorage.getItem('token'),
+      },
       body: JSON.stringify({
         input: input,
       }),
@@ -88,7 +131,10 @@ function App() {
         if (response) {
           fetch(`${API_URL}/image`, {
             method: 'put',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: window.sessionStorage.getItem('token'),
+            },
             body: JSON.stringify({
               id: user.id,
             }),

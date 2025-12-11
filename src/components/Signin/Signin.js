@@ -13,6 +13,10 @@ const Signin = ({ loadUser, onRouteChange }) => {
     setSignInPassword(event.target.value);
   };
 
+  const saveAuthTokenInSession = (token) => {
+    window.sessionStorage.setItem('token', token);
+  };
+
   const onSubmitSignIn = () => {
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -25,10 +29,25 @@ const Signin = ({ loadUser, onRouteChange }) => {
       }),
     })
       .then((response) => response.json())
-      .then((user) => {
-        if (user.id) {
-          loadUser(user);
-          onRouteChange('home');
+      .then((data) => {
+        if (data.userId && data.success === 'true') {
+          saveAuthTokenInSession(data.token);
+
+          fetch(`${API_URL}/profile/${data.userId}`, {
+            method: 'get',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: data.token,
+            },
+          })
+            .then((resp) => resp.json())
+            .then((user) => {
+              if (user && user.email) {
+                loadUser(user);
+                onRouteChange('home');
+              }
+            })
+            .catch(console.log);
         }
       });
   };
