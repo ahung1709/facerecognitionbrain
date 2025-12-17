@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getAuthTokenFromSession } from '../../utils/auth';
 import './Profile.css';
 
 const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
@@ -34,7 +35,8 @@ const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: window.sessionStorage.getItem('token'),
+        Authorization: getAuthTokenFromSession(),
+        // Authorization: window.sessionStorage.getItem('token'),
       },
       body: JSON.stringify({ formInput: data }),
     })

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAuthTokenFromSession } from './utils/auth';
 import ParticlesBg from 'particles-bg';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
@@ -37,7 +38,7 @@ function App() {
   const [user, setUser] = useState(initialUserState);
 
   useEffect(() => {
-    const token = window.sessionStorage.getItem('token');
+    const token = getAuthTokenFromSession();
     const API_URL = process.env.REACT_APP_API_URL;
 
     if (token) {
@@ -120,7 +121,7 @@ function App() {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: window.sessionStorage.getItem('token'),
+        Authorization: getAuthTokenFromSession(),
       },
       body: JSON.stringify({
         input: input,
@@ -133,7 +134,7 @@ function App() {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: window.sessionStorage.getItem('token'),
+              Authorization: getAuthTokenFromSession(),
             },
             body: JSON.stringify({
               id: user.id,

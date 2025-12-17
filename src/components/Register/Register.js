@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { handleAuthSuccess } from '../../utils/auth';
 
 const Register = ({ loadUser, onRouteChange }) => {
   const [email, setEmail] = useState('');
@@ -30,12 +31,12 @@ const Register = ({ loadUser, onRouteChange }) => {
       }),
     })
       .then((response) => response.json())
-      .then((user) => {
-        if (user.id) {
-          loadUser(user);
-          onRouteChange('home');
+      .then((data) => {
+        if (data.userId && data.success === 'true') {
+          handleAuthSuccess(data, loadUser, onRouteChange);
         }
-      });
+      })
+      .catch(console.log);
   };
 
   return (

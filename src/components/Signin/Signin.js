@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { handleAuthSuccess } from '../../utils/auth';
 import './Signin.css';
 
 const Signin = ({ loadUser, onRouteChange }) => {
@@ -11,10 +12,6 @@ const Signin = ({ loadUser, onRouteChange }) => {
 
   const onPasswordChange = (event) => {
     setSignInPassword(event.target.value);
-  };
-
-  const saveAuthTokenInSession = (token) => {
-    window.sessionStorage.setItem('token', token);
   };
 
   const onSubmitSignIn = () => {
@@ -31,23 +28,7 @@ const Signin = ({ loadUser, onRouteChange }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.userId && data.success === 'true') {
-          saveAuthTokenInSession(data.token);
-
-          fetch(`${API_URL}/profile/${data.userId}`, {
-            method: 'get',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: data.token,
-            },
-          })
-            .then((resp) => resp.json())
-            .then((user) => {
-              if (user && user.email) {
-                loadUser(user);
-                onRouteChange('home');
-              }
-            })
-            .catch(console.log);
+          handleAuthSuccess(data, loadUser, onRouteChange);
         }
       });
   };

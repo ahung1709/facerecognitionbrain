@@ -16,7 +16,7 @@ const ReactIcon = ({ onRouteChange, toggleModal, direction, ...args }) => {
       <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction}>
         <DropdownToggle data-toggle='dropdown' tag='span'>
           <img
-            src='http://tachyons.io/img/logo.jpg'
+            src='https://tachyons.io/img/logo.jpg'
             className='br-100 ba h3 w3 dib'
             alt='avatar'
           />
