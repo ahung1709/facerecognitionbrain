@@ -6,7 +6,13 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-const ReactIcon = ({ onRouteChange, toggleModal, direction, ...args }) => {
+const ReactIcon = ({
+  onRouteChange,
+  onSignOut,
+  toggleModal,
+  direction,
+  ...args
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -31,9 +37,7 @@ const ReactIcon = ({ onRouteChange, toggleModal, direction, ...args }) => {
           {...args}
         >
           <DropdownItem onClick={toggleModal}>View Profile</DropdownItem>
-          <DropdownItem onClick={() => onRouteChange('signout')}>
-            Sign Out
-          </DropdownItem>
+          <DropdownItem onClick={onSignOut}>Sign Out</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>

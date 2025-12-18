@@ -36,7 +36,6 @@ const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: getAuthTokenFromSession(),
-        // Authorization: window.sessionStorage.getItem('token'),
       },
       body: JSON.stringify({ formInput: data }),
     })

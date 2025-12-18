@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getAuthTokenFromSession } from './utils/auth';
+import {
+  getAuthTokenFromSession,
+  clearAuthTokenFromSession,
+} from './utils/auth';
 import ParticlesBg from 'particles-bg';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
@@ -84,6 +87,24 @@ function App() {
     });
   };
 
+  const onSignOut = () => {
+    const token = getAuthTokenFromSession();
+
+    fetch(`${process.env.REACT_APP_API_URL}/signout`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+      .catch(console.log)
+      .finally(() => {
+        clearAuthTokenFromSession();
+
+        onRouteChange('signout');
+      });
+  };
+
   const calculateFaceLocations = (data) => {
     if (data && data.outputs) {
       return data.outputs[0].data.regions.map((face) => {
@@ -158,6 +179,7 @@ function App() {
       setBoxes(initialBoxesState);
       setRoute(initialRouteState);
       setIsSignedIn(initialIsSignedInState);
+      setIsProfileOpen(initialIsProfileOpen);
       setUser(initialUserState);
       return;
     } else if (route === 'home') {
@@ -181,6 +203,7 @@ function App() {
       <Navigation
         isSignedIn={isSignedIn}
         onRouteChange={onRouteChange}
+        onSignOut={onSignOut}
         toggleModal={toggleModal}
       />
       {isProfileOpen && (
