@@ -49,7 +49,7 @@ function App() {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((resp) => resp.json())
@@ -59,7 +59,7 @@ function App() {
               method: 'get',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: token,
+                Authorization: `Bearer ${token}`,
               },
             })
               .then((resp) => resp.json())
@@ -94,7 +94,7 @@ function App() {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
     })
       .catch(console.log)
@@ -142,7 +142,7 @@ function App() {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getAuthTokenFromSession(),
+        Authorization: `Bearer ${getAuthTokenFromSession()}`,
       },
       body: JSON.stringify({
         input: input,
@@ -155,7 +155,7 @@ function App() {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: getAuthTokenFromSession(),
+              Authorization: `Bearer ${getAuthTokenFromSession()}`,
             },
             body: JSON.stringify({
               id: user.id,

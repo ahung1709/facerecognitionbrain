@@ -17,7 +17,7 @@ export const handleAuthSuccess = (data, loadUser, onRouteChange) => {
     method: 'get',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: data.token,
+      Authorization: `Bearer ${data.token}`,
     },
   })
     .then((resp) => resp.json())
