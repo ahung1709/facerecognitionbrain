@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { getAuthTokenFromSession } from '../../utils/auth';
+
+import avatar from '../../assets/avatar-default-svgrepo-com.svg';
 import './Profile.css';
 
 const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
@@ -52,11 +54,7 @@ const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
     <div className='profile-modal'>
       <article className='br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white'>
         <main className='pa4 black-80 w-80'>
-          <img
-            src='https://tachyons.io/img/logo.jpg'
-            className='h3 w3 dib'
-            alt='avatar'
-          />
+          <img src={avatar} className='h3 w3 dib' alt='avatar' />
           <h1>{userInput.name}</h1>
           <h4>{`Images Submitted: ${user.entries}`}</h4>
           <p>{`Member since: ${new Date(user.joined).toLocaleDateString()}`}</p>

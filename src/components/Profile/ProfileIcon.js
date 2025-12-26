@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
+import avatar from '../../assets/avatar-default-svgrepo-com.svg';
 
 const ReactIcon = ({
   onRouteChange,
@@ -21,11 +22,7 @@ const ReactIcon = ({
     <div className='pa4 tc'>
       <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction}>
         <DropdownToggle data-toggle='dropdown' tag='span'>
-          <img
-            src='https://tachyons.io/img/logo.jpg'
-            className='br-100 ba h3 w3 dib'
-            alt='avatar'
-          />
+          <img src={avatar} className='br-100 ba h3 w3 dib' alt='avatar' />
         </DropdownToggle>
         <DropdownMenu
           end
