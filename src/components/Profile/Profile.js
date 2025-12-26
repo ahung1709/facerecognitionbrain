@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_URL from '../../config';
 import { getAuthTokenFromSession } from '../../utils/auth';
 
 import avatar from '../../assets/avatar-default-svgrepo-com.svg';
@@ -31,7 +32,6 @@ const Profile = ({ isProfileOpen, toggleModal, loadUser, user }) => {
     }
   };
 
-  const API_URL = process.env.REACT_APP_API_URL;
   const onProfileUpdate = (data) => {
     fetch(`${API_URL}/profile/${user.id}`, {
       method: 'post',

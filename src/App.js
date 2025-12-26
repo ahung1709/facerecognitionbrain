@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from './config';
 import {
   getAuthTokenFromSession,
   clearAuthTokenFromSession,
@@ -42,7 +43,6 @@ function App() {
 
   useEffect(() => {
     const token = getAuthTokenFromSession();
-    const API_URL = process.env.REACT_APP_API_URL;
 
     if (token) {
       fetch(`${API_URL}/signin`, {
@@ -90,7 +90,7 @@ function App() {
   const onSignOut = () => {
     const token = getAuthTokenFromSession();
 
-    fetch(`${process.env.REACT_APP_API_URL}/signout`, {
+    fetch(`${API_URL}/signout`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -137,7 +137,6 @@ function App() {
   const onButtonSubmit = () => {
     setImageUrl(input);
 
-    const API_URL = process.env.REACT_APP_API_URL;
     fetch(`${API_URL}/imageurl`, {
       method: 'post',
       headers: {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_URL from '../../config';
 import { handleAuthSuccess } from '../../utils/auth';
 
 const Register = ({ loadUser, onRouteChange }) => {
@@ -19,8 +20,6 @@ const Register = ({ loadUser, onRouteChange }) => {
   };
 
   const onSubmitSignIn = () => {
-    const API_URL = process.env.REACT_APP_API_URL;
-
     fetch(`${API_URL}/register`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },

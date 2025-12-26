@@ -1,3 +1,5 @@
+import API_URL from '../config';
+
 export const saveAuthTokenInSession = (token) => {
   window.sessionStorage.setItem('token', token);
 };
@@ -13,7 +15,7 @@ export const clearAuthTokenFromSession = () => {
 export const handleAuthSuccess = (data, loadUser, onRouteChange) => {
   saveAuthTokenInSession(data.token);
 
-  fetch(`${process.env.REACT_APP_API_URL}/profile/${data.userId}`, {
+  fetch(`${API_URL}/profile/${data.userId}`, {
     method: 'get',
     headers: {
       'Content-Type': 'application/json',
