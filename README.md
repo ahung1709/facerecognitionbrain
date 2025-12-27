@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Face Recognition Brain App (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Face Recognition Brain is a full-stack face recognition web application that allows users to register, authenticate, and perform AI-powered face detection on images. Authenticated users can manage their profiles, submit image URLs for face detection, and track their usage through a ranking system.
 
-## Available Scripts
+This repository contains the **frontend application**, built with React.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 📸 Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Screenshots below show the main user flows of the application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Sign In
 
-### `npm test`
+![Sign In](./screenshots/signin.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Face Detection Dashboard
 
-### `npm run build`
+![Dashboard](./screenshots/dashboard.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Face Detection Result
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Face Detection](./screenshots/face-detection.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Profile Update
 
-### `npm run eject`
+![Rank Badge](./screenshots/profile.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🧩 Project Architecture
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+This project is intentionally split into three independent services:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Frontend (this repo)** – React web application
+- **Backend API** – Node.js + Express REST API
+- **Serverless Function** – AWS Lambda for rank badge calculation
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔄 System Interaction
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The frontend acts as the primary user interface and coordinates communication between multiple services:
 
-### Code Splitting
+- **Backend API**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  - Handles authentication, user profiles, face detection requests, and entry count persistence
+  - Receives JWTs via Authorization headers for protected routes
 
-### Analyzing the Bundle Size
+- **AWS Lambda (Rank Badge Service)**
+  - Invoked directly by the frontend
+  - Converts user entry counts into visual rank badges (emoji)
+  - Offloads non-critical logic from the backend to demonstrate a serverless-first design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This separation enables better scalability, reduced backend load, and clear responsibility boundaries between services.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🔗 Related repositories:
 
-### Advanced Configuration
+- 🔗 Backend API: https://github.com/ahung1709/facerecognitionbrain-api
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+  User authentication, image submission, and UI rendering
 
-### Deployment
+- 🔗 AWS Lambda (Rank Badge): https://github.com/ahung1709/rankly
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+  A lightweight serverless function that converts a user’s face-detection entry count into a visual rank badge (emoji)
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🛠 Tech Stack (Frontend)
+
+- React (Create React App)
+- JavaScript (ES6+)
+- Reactstrap
+- Bootstrap
+- Tachyons
+- JWT-based authentication
+- Fetch API
+
+---
+
+## 🔐 Authentication Flow
+
+- Users register or sign in via the backend API
+- A JWT is issued by the backend
+- JWT is stored in `sessionStorage`
+- Authenticated requests include the JWT in request headers
+
+---
+
+## 🤖 Face Detection Flow
+
+1. User submits an image URL
+2. Frontend sends request to backend
+3. Backend calls Clarifai API for face detection
+4. Bounding boxes are returned and rendered on the image
+5. Entry count is updated and displayed
+6. Rank badge is fetched directly from AWS Lambda (serverless service)
+
+---
+
+## 🚀 Getting Started (Local Development)
+
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm (comes with Node.js)
+
+> Note: This project uses npm.  
+> Using Yarn may result in different dependency resolutions.
+
+### ⚙️ Environment Variables
+
+The frontend relies on environment variables to communicate with backend services.
+
+Create a `.env` file in the project root:
+
+```env
+REACT_APP_API_URL=http://localhost:3001
+REACT_APP_SERVERLESS_BASE_URL=https://<lambda-url>
+```
+
+### Setup
+
+```bash
+npm install
+npm run dev
+```
