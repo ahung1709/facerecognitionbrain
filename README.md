@@ -6,6 +6,17 @@ This repository contains the **frontend application**, built with React.
 
 ---
 
+## 🌐 Live Demo
+
+🔗 https://facerecognitionbrain-frontend.onrender.com
+
+Demo account credentials:
+
+- Email: demo@example.com
+- Password: demo123
+
+---
+
 ## 📸 Screenshots
 
 Screenshots below show the main user flows of the application.
@@ -35,6 +46,8 @@ This project is intentionally split into three independent services:
 - **Frontend (this repo)** – React web application
 - **Backend API** – Node.js + Express REST API
 - **Serverless Function** – AWS Lambda for rank badge calculation
+
+This structure demonstrates separation of concerns, scalability, and real-world cloud deployment patterns.
 
 ---
 
@@ -100,17 +113,9 @@ This separation enables better scalability, reduced backend load, and clear resp
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## ⚙️ Environment Variables
 
-### Prerequisites
-
-- Node.js (v18+ recommended)
-- npm (comes with Node.js)
-
-> Note: This project uses npm.  
-> Using Yarn may result in different dependency resolutions.
-
-### ⚙️ Environment Variables
+### Local development
 
 The frontend relies on environment variables to communicate with backend services.
 
@@ -120,6 +125,31 @@ Create a `.env` file in the project root:
 REACT_APP_API_URL=http://localhost:3001
 REACT_APP_SERVERLESS_BASE_URL=https://<lambda-url>
 ```
+
+> A single `.env` file is sufficient for local development.  
+> `.env.development` is optional and not required.
+
+### Deployment
+
+The frontend is deployed as a static site on Render.
+Environment variables are injected at build time.
+
+```env
+REACT_APP_API_URL=https://facerecognitionbrain-api-ulce.onrender.com
+REACT_APP_SERVERLESS_BASE_URL=https://<lambda-url>
+```
+
+---
+
+## 🚀 Getting Started (Local Development)
+
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm (comes with Node.js)
+
+> Note: This project uses npm.  
+> Using Yarn may result in different dependency resolutions.
 
 ### Setup
 
